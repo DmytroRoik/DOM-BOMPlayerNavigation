@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DOM BOM Player Navigation</title>
+	<style>
+	body,html{
+		overflow: hidden;
+	}
+	div#player {
+		
+		background-image: url(img/tank.png);
+		-webkit-background-size: cover;
+		background-size: cover;
+		width: 76px;
+		height: 89px;
+
+		transition: all 0.3s linear;
+
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	.bullet{
+	width:10px;
+	position: absolute;
+	top:50;
+	width: 50;
+	border:1px solid red;
+	}
+	
+</style>
+</head>
+<body>
+	<div id="player">
+	</div>
+	<script src="common.js"></script>
+</body>
+</html>
