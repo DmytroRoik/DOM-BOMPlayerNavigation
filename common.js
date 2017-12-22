@@ -75,17 +75,15 @@ document.body.onkeydown = function (e) {
   var start = Date.now();
 
   var timer = setInterval(function () {
- //   console.log(bullet.style.top)
     var timePassed = Date.now() - start;
     console.log(deltaX,deltaY);
     var curBulletPosX=player.positionX+32+deltaX*timePassed/20;
     var curBulletPosY=player.positionY+28-deltaY*timePassed/20;
-   // bullet.style.top+=deltaY*10+'px';
+   
     bullet.style.left=curBulletPosX+'px';
     bullet.style.top=curBulletPosY+'px';
     if(timePassed>10000)
       clearInterval(timer);
-
       return;
   }, 10);
 
