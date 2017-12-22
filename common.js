@@ -5,9 +5,16 @@ var player={
   positionX: 50,
   positionY: 50,
   angle: 0,
+  trackPositionL: 0,
+  trackPositionR: 0,
   hp:100,
   bullets:20,
 }
+
+var el = document.getElementById('player');
+var $elTrackLeft=el.getElementsByClassName("track")[0];
+var $elTrackRight=el.getElementsByClassName('track')[1];
+
 function Bullet(positionX,positionY,angle){
   this.positionX=positionX;
   this.positionY=positionY;
@@ -18,8 +25,6 @@ function sleepFor( sleepDuration ){
 while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
 document.body.onkeydown = function (e) {
-	var el = document.getElementById('player');
-
   var KEYCODE_LEFT = 37;
   var KEYCODE_RIGHT = 39;
   var KEYCODE_UP=38;
@@ -35,7 +40,7 @@ document.body.onkeydown = function (e) {
     el.style.transform = 'rotateZ('+player.angle+'deg)';
   }
 
-  var deltaX=0,deltaY=0;
+  var deltaX=0,deltaY=0;//vectors of direction
   deltaY+=(parseInt (20*(Math.cos(player.angle/57.324840)).toFixed(1)));
   deltaX+=(parseInt (20*(Math.sin(player.angle/57.324840)).toFixed(1)));
 
@@ -50,9 +55,10 @@ document.body.onkeydown = function (e) {
    el.style.top= player.positionY+'px';
    el.style.left= player.positionX+'px';
  },3);
-
- }
- else if(e.keyCode==KEYCODE_DOWN){
+//move track
+player.trackPositionL= player.trackPositionR-=Math.abs(deltaX)+Math.abs(deltaY);
+}
+else if(e.keyCode==KEYCODE_DOWN){
     if(player.positionY>=30&&player.positionY<=window.innerHeight-120) player.positionY+=(deltaY);// deltaY;
     else player.positionY = player.positionY<=30?30:window.innerHeight-120;
 
@@ -61,8 +67,11 @@ document.body.onkeydown = function (e) {
 
    el.style.top= player.positionY+'px';
    el.style.left= player.positionX+'px';
+   //move track
+   console.log(deltaX,deltaY);
+ player.trackPositionL= player.trackPositionR-=Math.abs(deltaX)+Math.abs(deltaY);
  }
- else if(e.keyCode==KEYCODE_SPACE){
+ else if(e.keyCode==KEYCODE_SPACE){//fire
 
   var bullet=document.createElement('img');
   bullet.setAttribute("src", "img/bullet.png");
@@ -79,14 +88,14 @@ document.body.onkeydown = function (e) {
     console.log(deltaX,deltaY);
     var curBulletPosX=player.positionX+32+deltaX*timePassed/20;
     var curBulletPosY=player.positionY+28-deltaY*timePassed/20;
-   
+
     bullet.style.left=curBulletPosX+'px';
     bullet.style.top=curBulletPosY+'px';
     if(timePassed>10000)
       clearInterval(timer);
-      return;
+    return;
   }, 10);
-
 }
-
+$elTrackRight.style.backgroundPosition = '0px '+player.trackPositionR+'px';
+$elTrackLeft.style.backgroundPosition = '0px '+player.trackPositionL+'px';
 }
