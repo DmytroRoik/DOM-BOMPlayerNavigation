@@ -91,9 +91,17 @@ else if(e.keyCode==KEYCODE_DOWN){
 
     bullet.style.left=curBulletPosX+'px';
     bullet.style.top=curBulletPosY+'px';
+<<<<<<< b298049b2b06c2cad21163e30b9f885eaba24b64
     if(timePassed>10000)
       clearInterval(timer);
     return;
+=======
+    if(timePassed>10000){
+        clearInterval(timer);
+        bullet.remove();
+        return;
+      }
+>>>>>>> added tank track
   }, 10);
 }
 $elTrackRight.style.backgroundPosition = '0px '+player.trackPositionR+'px';
