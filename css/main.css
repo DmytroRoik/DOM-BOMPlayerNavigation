@@ -1,0 +1,60 @@
+body,html{
+		overflow: hidden;
+	}
+	div.tank {
+		
+		background-image: url(../img/tank.png);
+		-webkit-background-size: cover;
+		background-size: cover;
+		width: 76px;
+		height: 89px;
+
+		transition: all 0.3s linear;
+
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	.bullet{
+	width:10px;
+	position: absolute;
+	top:50;
+	width: 50;
+	}
+	.bullet_boom{
+		z-index: 100;
+		height: 50px;
+		width:50px;
+		margin:-25px;
+		animation: BulletBoom, .2s,1;
+	}
+	@keyframes BulletBoom{
+		0%{
+
+		}
+		50%{
+			height: 90px;
+			margin: 0px;
+		}
+		100%{
+			height: 1px;
+			width:1px;
+		}
+
+	}
+	.track{
+		background-image: url(../img/track.png);
+		background-repeat: repeat-y;	
+		width: 	9px;
+		height: 80px;
+		position: absolute;
+	}
+	.track:first-child{
+		top:10px;
+		left:3px;
+	}
+	.track:last-child{
+		top:10px;
+		left:63px;
+	}
+	

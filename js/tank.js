@@ -1,5 +1,4 @@
-function Tank(positionX,positionY,angle)
-{
+function Tank(positionX,positionY,angle){
 	this.position={X: positionX,Y: positionY};
 	this.angle=angle;
 	this.trackPositionL=0;
@@ -15,8 +14,8 @@ function Tank(positionX,positionY,angle)
 	this.$trackL=this.$el.getElementsByClassName('track')[0];
 	this.$trackR=this.$el.getElementsByClassName('track')[1];
 	 
-		 this.$el.style.top=this.position.Y+'px';
-		 this.$el.style.left=this.position.X+'px';	
+   this.$el.style.top=this.position.Y+'px';
+   this.$el.style.left=this.position.X+'px';	
 	document.body.append(this.$el);
 }
 
@@ -63,71 +62,24 @@ Tank.prototype.Move = function(direction){
 	   this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
 	}
 	 this.$trackR.style.backgroundPosition = '0px '+this.trackPositionR+'px';
-	 this.$trackL.style.backgroundPosition = '0px '+this.trackPositionL+'px';
+	 this.$trackL.style.backgroundPosition = '0px '+this.trackPositionL+'px';  
 };
 
 Tank.prototype.Fire = function(){
-
 	var bullet=new Bullet(this.position.X,this.position.Y,{'X': this.deltaX,'Y': this.deltaY },this.angle,this.$el);
-	
  	var start = Date.now();
-
+ 	soundPlay('mp3/shut.mp3');
    var self = this;
  	var timer = setInterval(function () {
  		var timePassed = Date.now() - start;
  		if(bullet.isFindTank(timePassed)){
  			clearInterval(timer);
  		} 		
-
- 		if(timePassed>4000){
- 			
- 			//bullet.remove();
+ 		if(timePassed>4000){//liftime of bullet is 4s
  			return;
  		}
  	}, 5);
 };
 Tank.prototype.Destroy = function(){
-	
-};
-function Bullet(startPositionX,startPositionY,delta,angle,$parent){
-	this.startPositionX=startPositionX;
-	this.startPositionY=startPositionY;
-	this.curPositionX;
-	this.curPositionY;
-	this.angle=angle;
-	this.deltaX=delta['X'];
-	this.deltaY=delta['Y'];
-	this.isFindEnemyTank=false;
-	this.$bullet=document.createElement('img');
-		this.$bullet.setAttribute("src", "img/bullet.png");
- 		this.$bullet.classList.add('bullet');
- 		this.$bullet.style.top=this.startPositionY+28+'px';
- 		this.$bullet.style.left=this.startPositionX+30+'px';
- 		this.$bullet.style.transform = 'rotateZ('+this.angle+'deg)';
- 	document.body.insertBefore(this.$bullet, $parent);
- 	}
- 	Bullet.prototype.isFindTank = function(timePassed){
-	this.curPositionX=this.startPositionX+32+this.deltaX*timePassed/20;
-	this.$bullet.style.left=this.curPositionX+'px';
-	this.curPositionY=this.startPositionY+28-this.deltaY*timePassed/20;
-	this.$bullet.style.top=this.curPositionY+'px';
-	var self=this;
-		var isfound=false;
-		setTimeout(this.SeekTank, 100,this);
-		if(this.isFindEnemyTank)return true;
- 	
-	//}, 10);
-	
-
-};
-Bullet.prototype.SeekTank = function(bullet){
-	for(let i=0;i<tankPositions.length;i++){
-		if(bullet.curPositionX>=tankPositions[i].X&&bullet.curPositionX<=tankPositions[i].X+76&&
- 			bullet.curPositionY>=tankPositions[i].Y&&bullet.curPositionY<=tankPositions[i].Y+76){
- 				bullet.isFindEnemyTank=true;
- 			enemys[i].Destroy();
- 		}}
-};
-Bullet.prototype.Destroy = function(argument){
 	
 };
