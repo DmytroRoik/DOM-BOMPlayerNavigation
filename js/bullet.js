@@ -1,4 +1,3 @@
-//var timer=null;
 
 function Bullet(startPositionX,startPositionY,delta,angle,$parent){
 	this.startPositionX=startPositionX;
@@ -23,10 +22,9 @@ function Bullet(startPositionX,startPositionY,delta,angle,$parent){
 	this.$bullet.style.left=this.curPositionX+'px';
 	this.curPositionY=this.startPositionY+28-this.deltaY*timePassed/20;
 	this.$bullet.style.top=this.curPositionY+'px';
-	//var self=this;
-		//var isfound=false;
-		var timer=setTimeout(this.SeekTank, 100,this);
-		if(this.isFindEnemyTank){ return true; }
+	
+	var timer=setTimeout(this.SeekTank, 100,this);
+	if(this.isFindEnemyTank){ return true; }
 };
 
 Bullet.prototype.SeekTank = function(bullet){
@@ -47,8 +45,4 @@ Bullet.prototype.Destroy = function(){
 	//alert('boom');
 	this.$bullet.setAttribute('src', 'http://www.clker.com/cliparts/B/z/q/W/b/y/comic-explosion-hi.png');
 	this.$bullet.classList.add('bullet_boom');
-	var self=this;
-	setTimeout(function(){
-	//	self.
-	}, 1);
 }
