@@ -7,25 +7,26 @@ function Tank(positionX,positionY,angle){
 	this.deltaX=0;
 	this.deltaY=0;
 	this.$el=document.createElement('div');
-		this.$el.classList.add('tank');
-		this.$el.innerHTML='<div class="track"></div>'+
-								 '<div class="track"></div>';
-		 this.$el.classList.add('tank');
+	this.$el.classList.add('tank');
+	this.$el.innerHTML='<div class="track"></div>'+
+	'<div class="track"></div>';
+	this.$el.classList.add('tank');
 	this.$trackL=this.$el.getElementsByClassName('track')[0];
 	this.$trackR=this.$el.getElementsByClassName('track')[1];
-	 
-   this.$el.style.top=this.position.Y+'px';
-   this.$el.style.left=this.position.X+'px';	
+
+	this.$el.style.top=this.position.Y+'px';
+	this.$el.style.left=this.position.X+'px';	
 	document.body.append(this.$el);
+	this.lastDelta={};
 }
 
 Tank.prototype.Move = function(direction){
 	if (direction=="LEFT") {
-		this.angle-=45;
+		this.angle-=90;
 		this.$el.style.transform = 'rotateZ('+this.angle+'deg)';
 	}
 	else if (direction=="RIGHT") {
-		this.angle+=45;
+		this.angle+=90;
 		this.$el.style.transform = 'rotateZ('+this.angle+'deg)';
 	}
 
@@ -34,21 +35,42 @@ Tank.prototype.Move = function(direction){
   this.deltaX=(parseInt (20*(Math.sin(this.angle/57.324840)).toFixed(1)));
 
   if(direction=="UP"){
-	var self=this;
-  	setTimeout(function () {
-  		   if(self.position.Y>=30&&self.position.Y<=window.innerHeight-120) self.position.Y-=(self.deltaY);// deltaY;
-		   else self.position.Y = self.position.Y<=30?30:window.innerHeight-120;
+  	
+  	for(let i=wallsPosition.length-1;i>=0;i--){
+  		if((this.position.Y+76-this.deltaY>=wallsPosition[i].position.Y)&&(this.position.Y-this.deltaY<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
+  			(this.position.X+76+this.deltaX>wallsPosition[i].position.X)&&(this.position.X+this.deltaX<=wallsPosition[i].position.X+wallsPosition[i].width)){
+  			return;
+  	}
+  }
+  var self=this;
+  if(self.position.Y>=30&&self.position.Y<=window.innerHeight-120){
+
+
+		  		//    	if(bullet.curPositionX>=tankPositions[i].X&&bullet.curPositionX<=tankPositions[i].X+76&&//76-tank width and height
+		 			// bullet.curPositionY>=tankPositions[i].Y&&bullet.curPositionY<=tankPositions[i].Y+76){
+		 			// 	bullet.isFindEnemyTank=true;
+
+  		self.position.Y-=(self.deltaY);// deltaY;
+  	} //
+  	else self.position.Y = self.position.Y<=30?30:window.innerHeight-120;
 
 		   if(self.position.X>=40&&self.position.X<=window.innerWidth-120) self.position.X+=self.deltaX;// deltaY;
 		   else self.position.X=self.position.X<=40?40:window.innerWidth-120;
 
 		   self.$el.style.top = self.position.Y+'px';
 		   self.$el.style.left = self.position.X+'px';
-		},3);
+		   this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
 		//move track
-		this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
+		
 	}
 	else if(direction=="DOWN"){
+		for(let i=wallsPosition.length-1;i>=0;i--){
+			if((this.position.Y+76+this.deltaY>=wallsPosition[i].position.Y)&&(this.position.Y+this.deltaY<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
+				(this.position.X+76-this.deltaX>wallsPosition[i].position.X)&&(this.position.X-this.deltaX<=wallsPosition[i].position.X+wallsPosition[i].width)){
+				return;
+			}
+		}
+
 	    if(this.position.Y>=30&&this.position.Y<=window.innerHeight-120) this.position.Y+=(this.deltaY);// deltaY;
 	    else this.position.Y = this.position.Y<=30?30:window.innerHeight-120;
 
@@ -61,21 +83,22 @@ Tank.prototype.Move = function(direction){
 	   
 	   this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
 	}
-	 this.$trackR.style.backgroundPosition = '0px '+this.trackPositionR+'px';
-	 this.$trackL.style.backgroundPosition = '0px '+this.trackPositionL+'px';  
+	this.$trackR.style.backgroundPosition = '0px '+this.trackPositionR+'px';
+	this.$trackL.style.backgroundPosition = '0px '+this.trackPositionL+'px';  
 };
 
 Tank.prototype.Fire = function(){
 	var bullet=new Bullet(this.position.X,this.position.Y,{'X': this.deltaX,'Y': this.deltaY },this.angle,this.$el);
- 	var start = Date.now();
- 	soundPlay('mp3/shut.mp3');
-   var self = this;
- 	var timer = setInterval(function () {
- 		var timePassed = Date.now() - start;
- 		if(bullet.isFindTank(timePassed)){
- 			clearInterval(timer);
- 		} 		
+	var start = Date.now();
+	soundPlay('mp3/shut.mp3');
+	var self = this;
+	var timer = setInterval(function () {
+		var timePassed = Date.now() - start;
+		if(bullet.isFindTank(timePassed)){
+			clearInterval(timer);
+		} 		
  		if(timePassed>4000){//liftime of bullet is 4s
+ 			clearInterval(timer);
  			return;
  		}
  	}, 5);

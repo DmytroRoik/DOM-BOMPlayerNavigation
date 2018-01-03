@@ -8,6 +8,7 @@ function Bullet(startPositionX,startPositionY,delta,angle,$parent){
 	this.deltaX=delta['X'];
 	this.deltaY=delta['Y'];
 	this.isFindEnemyTank=false;
+	this.isFindWall=false;
 	this.$bullet=document.createElement('img');
 		this.$bullet.setAttribute("src", "img/bullet.png");
  		this.$bullet.classList.add('bullet');
@@ -24,21 +25,30 @@ function Bullet(startPositionX,startPositionY,delta,angle,$parent){
 	this.$bullet.style.top=this.curPositionY+'px';
 	
 	var timer=setTimeout(this.SeekTank, 100,this);
-	if(this.isFindEnemyTank){ return true; }
+	if(this.isFindEnemyTank||this.isFindWall){ return true; }
 };
 
 Bullet.prototype.SeekTank = function(bullet){
 	for(let i=0;i<tankPositions.length;i++){
-		if(bullet.curPositionX>=tankPositions[i].X&&bullet.curPositionX<=tankPositions[i].X+76&&
+		if(bullet.curPositionX>=tankPositions[i].X&&bullet.curPositionX<=tankPositions[i].X+76&&//76-tank width and height
  			bullet.curPositionY>=tankPositions[i].Y&&bullet.curPositionY<=tankPositions[i].Y+76){
  				bullet.isFindEnemyTank=true;
 
  			soundPlay('mp3/boom.mp3');
  			enemys[i].Destroy();
  			bullet.Destroy();
- 			break;
+ 			return;
  		}
  	}
+ 	for(let i=wallsPosition.length-1;i>=0;i--){
+			if((bullet.curPositionY+20+bullet.deltaY>=wallsPosition[i].position.Y)&&(bullet.curPositionY+bullet.deltaY<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
+				(bullet.curPositionX+20-bullet.deltaX>wallsPosition[i].position.X)&&(bullet.curPositionX-bullet.deltaX<=wallsPosition[i].position.X+wallsPosition[i].width)){
+				bullet.isFindWall=true;
+				bullet.Destroy();
+				soundPlay('mp3/boom.mp3');
+				return;
+			}
+		}
 };
 Bullet.prototype.Destroy = function(){
 	//play boom http://www.clker.com/cliparts/B/z/q/W/b/y/comic-explosion-hi.png
