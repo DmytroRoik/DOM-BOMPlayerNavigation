@@ -32,9 +32,7 @@ for(let i=0;i<walls.length;i++){          //build walls
     width: walls[i].width,
     height: walls[i].height
   });
-  console.log(wallsPosition[i].position);
 }
-console.log('-------------------');
 document.body.onkeydown = function (e) {
   var KEYCODE_LEFT = 37;
   var KEYCODE_RIGHT = 39;

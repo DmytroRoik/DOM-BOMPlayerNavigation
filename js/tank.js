@@ -36,40 +36,47 @@ Tank.prototype.Move = function(direction){
 
   if(direction=="UP"){
   	
-  	for(let i=wallsPosition.length-1;i>=0;i--){
+  	for(let i=wallsPosition.length-1;i>=0;i--){//colision with wall
   		if((this.position.Y+76-this.deltaY>=wallsPosition[i].position.Y)&&(this.position.Y-this.deltaY<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
   			(this.position.X+76+this.deltaX>wallsPosition[i].position.X)&&(this.position.X+this.deltaX<=wallsPosition[i].position.X+wallsPosition[i].width)){
+  			return;
+  		}
+  	}
+  	for(let i=tankPositions.length-1;i>=1;i--){//colision with tank
+  		if((this.position.Y+76-this.deltaY>=tankPositions[i].Y)&&(this.position.Y-this.deltaY<=tankPositions[i].Y+76)&&
+  			(this.position.X+76+this.deltaX>tankPositions[i].X)&&(this.position.X+this.deltaX<=tankPositions[i].X+76)){
   			return;
   	}
   }
   var self=this;
   if(self.position.Y>=30&&self.position.Y<=window.innerHeight-120){
+  	self.position.Y-=(self.deltaY);
+  } 
+  else self.position.Y = self.position.Y<=30?30:window.innerHeight-120;
 
+  if(self.position.X>=40&&self.position.X<=window.innerWidth-120) self.position.X+=self.deltaX;
+  else self.position.X=self.position.X<=40?40:window.innerWidth-120;
 
-		  		//    	if(bullet.curPositionX>=tankPositions[i].X&&bullet.curPositionX<=tankPositions[i].X+76&&//76-tank width and height
-		 			// bullet.curPositionY>=tankPositions[i].Y&&bullet.curPositionY<=tankPositions[i].Y+76){
-		 			// 	bullet.isFindEnemyTank=true;
-
-  		self.position.Y-=(self.deltaY);// deltaY;
-  	} //
-  	else self.position.Y = self.position.Y<=30?30:window.innerHeight-120;
-
-		   if(self.position.X>=40&&self.position.X<=window.innerWidth-120) self.position.X+=self.deltaX;// deltaY;
-		   else self.position.X=self.position.X<=40?40:window.innerWidth-120;
-
-		   self.$el.style.top = self.position.Y+'px';
-		   self.$el.style.left = self.position.X+'px';
-		   this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
+  self.$el.style.top = self.position.Y+'px';
+  self.$el.style.left = self.position.X+'px';
+  this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
 		//move track
 		
 	}
 	else if(direction=="DOWN"){
-		for(let i=wallsPosition.length-1;i>=0;i--){
+		for(let i=wallsPosition.length-1;i>=0;i--){//colision with wall
 			if((this.position.Y+76+this.deltaY>=wallsPosition[i].position.Y)&&(this.position.Y+this.deltaY<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
 				(this.position.X+76-this.deltaX>wallsPosition[i].position.X)&&(this.position.X-this.deltaX<=wallsPosition[i].position.X+wallsPosition[i].width)){
 				return;
-			}
 		}
+
+	}
+	for(let i=tankPositions.length-1;i>=1;i--){//colision with tank
+  		if((this.position.Y+76+this.deltaY>=tankPositions[i].Y)&&(this.position.Y+this.deltaY<=tankPositions[i].Y+76)&&
+  			(this.position.X+76-this.deltaX>tankPositions[i].X)&&(this.position.X-this.deltaX<=tankPositions[i].X+76)){
+  			return;
+  	}
+  }
 
 	    if(this.position.Y>=30&&this.position.Y<=window.innerHeight-120) this.position.Y+=(this.deltaY);// deltaY;
 	    else this.position.Y = this.position.Y<=30?30:window.innerHeight-120;
