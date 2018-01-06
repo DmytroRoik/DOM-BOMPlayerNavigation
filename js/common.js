@@ -8,8 +8,10 @@ var wallsPosition=[];
 player = new Tank(100,100,0);
 
 enemys.push(player);
-enemys.push(new Tank(100,500,0));
-
+enemys.push(new Tank(150,500,0));
+enemys.push(new Tank(450,400,0));
+enemys[1].moveWithAI();
+enemys[2].moveWithAI();
 
 for(let i=0;i<enemys.length;i++){
   tankPositions.push(enemys[i].position);
@@ -44,7 +46,7 @@ document.body.onkeydown = function (e) {
     player.Move("LEFT");
   }
   else if (e.keyCode == KEYCODE_RIGHT) {
-    player.Move("RIGHT"); 
+    player.Move("RIGHT");
   }
 
   if(e.keyCode==KEYCODE_UP){
