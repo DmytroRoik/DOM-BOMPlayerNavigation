@@ -12,8 +12,8 @@ function Bullet(startPositionX,startPositionY,delta,angle,$parent){
 	this.$bullet=document.createElement('img');
 		this.$bullet.setAttribute("src", "img/bullet.png");
  		this.$bullet.classList.add('bullet');
- 		this.$bullet.style.top=this.startPositionY+28+'px';
- 		this.$bullet.style.left=this.startPositionX+30+'px';
+ 		this.$bullet.style.top=this.startPositionY+32+'px';
+ 		this.$bullet.style.left=this.startPositionX+32+'px';
  		this.$bullet.style.transform = 'rotateZ('+this.angle+'deg)';
  	document.body.insertBefore(this.$bullet, $parent);
  }
@@ -21,7 +21,7 @@ function Bullet(startPositionX,startPositionY,delta,angle,$parent){
  Bullet.prototype.isFindTank = function(timePassed){
 	this.curPositionX=this.startPositionX+32+this.deltaX*timePassed/20;
 	this.$bullet.style.left=this.curPositionX+'px';
-	this.curPositionY=this.startPositionY+28-this.deltaY*timePassed/20;
+	this.curPositionY=this.startPositionY+26-this.deltaY*timePassed/20;
 	this.$bullet.style.top=this.curPositionY+'px';
 
 	var timer=setTimeout(this.SeekTank, 100,this);

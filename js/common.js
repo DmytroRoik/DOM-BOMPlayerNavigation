@@ -8,13 +8,17 @@ var wallsPosition=[];
 player = new Tank(100,100,0);
 
 enemys.push(player);
-enemys.push(new Tank(150,500,0));
-enemys.push(new Tank(450,400,0));
-enemys[1].moveWithAI();
-enemys[2].moveWithAI();
+enemys.push(new Tank(250,200,0));
+enemys.push(new Tank(450,670,0));
+enemys.push(new Tank(550,450,0));
+enemys.push(new Tank(650,400,0));
+enemys.push(new Tank(770,200,90));
+enemys.push(new Tank(850,300,0));
+enemys.push(new Tank(950,400,0));
 
 for(let i=0;i<enemys.length;i++){
   tankPositions.push(enemys[i].position);
+  if(i!=0)enemys[i].moveWithAI();
 }
 
 walls.push(new Wall(600,200,150,300));
@@ -62,8 +66,8 @@ document.body.onkeydown = function (e) {
 
 function soundPlay(urlSound) {
     if(audio!=null&&!audio.paused)audio.pause();//stop prev sound
-    audio = new Audio(); // new audio el
-    audio.src = urlSound; //sound path
+    audio = new Audio();
+    audio.src = urlSound;
     audio.play();
 }
 

@@ -129,7 +129,7 @@ Tank.prototype.moveWithAI = function(){//пародія на інтелект
    else if(randDirrection>0.1&&randDirrection<0.2){
      self.Move("RIGHT");
    }
-   if(randDirrection<=0.05)self.Fire();
+   //if(randDirrection<=0.05)self.Fire();//don`t fire
  }, 250);
 
 };
