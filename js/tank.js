@@ -1,6 +1,6 @@
-function Tank(positionX,positionY,angle){
+function Tank(positionX,positionY){
 	this.position={X: positionX,Y: positionY};
-	this.angle=angle;
+	this.angle=0;
 	this.trackPositionL=0;
 	this.trackPositionR=0;
 	this.bullets=20;

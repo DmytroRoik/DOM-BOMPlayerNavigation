@@ -2,7 +2,6 @@ body,html{
 	overflow: hidden;
 }
 div.tank {
-
 	background-image: url(../img/tank.png);
 	-webkit-background-size: cover;
 	background-size: cover;
@@ -41,11 +40,10 @@ div.tank {
 		height: 1px;
 		width:1px;
 	}
-
 }
 .track{
 	background-image: url(../img/track.png);
-	background-repeat: repeat-y;	
+	background-repeat: repeat-y;
 	width: 	9px;
 	height: 70px;
 	position: absolute;
@@ -61,4 +59,9 @@ div.tank {
 .wall{
 	position:absolute;
 	background-color: green;
+  background-image: url(../img/wall.jpg);
+  background-repeat: repeat;
+}
+body{
+  background-color: black;
 }
