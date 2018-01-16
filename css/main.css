@@ -7,9 +7,6 @@ div.tank {
 	background-size: cover;
 	width: 76px;
 	height: 76px;
-
-	transition: all 0.3s linear;
-
 	position: absolute;
 	top: 0px;
 	left: 0px;

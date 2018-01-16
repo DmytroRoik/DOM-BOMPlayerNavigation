@@ -6,7 +6,6 @@ var walls=[];
 var wallsPosition=[];
 
 player = new Tank(100,100);
-
 enemys.push(player);
 enemys.push(new Tank(310,200));
 enemys.push(new Tank(560,550));

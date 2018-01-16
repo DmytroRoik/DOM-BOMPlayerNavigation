@@ -17,128 +17,111 @@ function Tank(positionX,positionY){
 	this.$el.style.top=this.position.Y+'px';
 	this.$el.style.left=this.position.X+'px';
   this.isDead=false;
-	document.body.append(this.$el);
+  this.canShoot=true;
+  document.body.append(this.$el);
 }
+var WIDTH_TANK_IMAGE=76;
 
 Tank.prototype.Move = function(direction){
   if(this.isDead)return;
-	if (direction=="LEFT") {
-		this.angle-=90;
-		this.$el.style.transform = 'rotateZ('+this.angle+'deg)';
-	}
-	else if (direction=="RIGHT") {
-		this.angle+=90;
-		this.$el.style.transform = 'rotateZ('+this.angle+'deg)';
-	}
+  if (direction=="LEFT") {
+    this.angle-=90;
+    this.$el.style.transform = 'rotateZ('+this.angle+'deg)';
+    //vectors of direction
+    this.deltaY=(parseInt (20*(Math.cos(this.angle/57.324840)).toFixed(1)));
+    this.deltaX=(parseInt (20*(Math.sin(this.angle/57.324840)).toFixed(1)));
+    return;
+  }
+  else if (direction=="RIGHT") {
+    this.angle+=90;
+    this.$el.style.transform = 'rotateZ('+this.angle+'deg)';
+    //vectors of direction
+    this.deltaY=(parseInt (20*(Math.cos(this.angle/57.324840)).toFixed(1)));
+    this.deltaX=(parseInt (20*(Math.sin(this.angle/57.324840)).toFixed(1)));
+    return;
+  }
 
-  //vectors of direction
-  this.deltaY=(parseInt (20*(Math.cos(this.angle/57.324840)).toFixed(1)));
-  this.deltaX=(parseInt (20*(Math.sin(this.angle/57.324840)).toFixed(1)));
-
+  var directionIndex=1;
   if(direction=="UP"){
-
-  	for(let i=wallsPosition.length-1;i>=0;i--){//colision with wall
-  		if((this.position.Y+76-this.deltaY>=wallsPosition[i].position.Y)&&(this.position.Y-this.deltaY<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
-  			(this.position.X+76+this.deltaX>wallsPosition[i].position.X)&&(this.position.X+this.deltaX<=wallsPosition[i].position.X+wallsPosition[i].width)){
-  			return;
-  	}
+    directionIndex=1;
   }
-  	for(let i=tankPositions.length-1;i>=0;i--){//colision with tank
-  		if(this.position ==tankPositions[i])continue;
-  		if((this.position.Y+76-this.deltaY>=tankPositions[i].Y)&&(this.position.Y-this.deltaY<=tankPositions[i].Y+76)&&
-  			(this.position.X+76+this.deltaX>tankPositions[i].X)&&(this.position.X+this.deltaX<=tankPositions[i].X+76)){
-  			return;
-  	}
+  else if(direction=="DOWN"){
+    directionIndex=-1;
   }
 
-  if(this.position.Y>=30&&this.position.Y<=window.innerHeight-120){
-  	this.position.Y-=(this.deltaY);
+  //general action
+  for(let i=wallsPosition.length-1;i>=0;i--){//colision with wall
+    if((this.position.Y+WIDTH_TANK_IMAGE-this.deltaY*directionIndex>=wallsPosition[i].position.Y)&&(this.position.Y-this.deltaY*directionIndex<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
+      (this.position.X+WIDTH_TANK_IMAGE+this.deltaX*directionIndex>wallsPosition[i].position.X)&&(this.position.X+this.deltaX*directionIndex<=wallsPosition[i].position.X+wallsPosition[i].width)){
+      return;
   }
-  else this.position.Y = this.position.Y<=30?30:window.innerHeight-120;
-
-  if(this.position.X>=40&&this.position.X<=window.innerWidth-120) this.position.X+=this.deltaX;
-  else this.position.X=this.position.X<=40?40:window.innerWidth-120;
-
-  this.$el.style.top = this.position.Y+'px';
-  this.$el.style.left = this.position.X+'px';
-
-
-  this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
-		//move track
-	}
-	else if(direction=="DOWN"){
-		for(let i=wallsPosition.length-1;i>=0;i--){//colision with wall
-			if((this.position.Y+76+this.deltaY>=wallsPosition[i].position.Y)&&(this.position.Y+this.deltaY<=wallsPosition[i].position.Y+wallsPosition[i].height)&&
-				(this.position.X+76-this.deltaX>wallsPosition[i].position.X)&&(this.position.X-this.deltaX<=wallsPosition[i].position.X+wallsPosition[i].width)){
-				return;
-		}
-	}
-	for(let i=tankPositions.length-1;i>=1;i--){//colision with tank
-		if(this.position ==tankPositions[i])continue;
-		if((this.position.Y+76+this.deltaY>=tankPositions[i].Y)&&(this.position.Y+this.deltaY<=tankPositions[i].Y+76)&&
-			(this.position.X+76-this.deltaX>tankPositions[i].X)&&(this.position.X-this.deltaX<=tankPositions[i].X+76)){
-			return;
-	}
 }
-if(this.position.Y>=30&&this.position.Y<=window.innerHeight-120) this.position.Y+=(this.deltaY);
-else this.position.Y = this.position.Y<=30?30:window.innerHeight-120;
 
-if(this.position.X>=40&&this.position.X<=window.innerWidth-120) this.position.X-=this.deltaX;
-else this.position.X=this.position.X<=40?40:window.innerWidth-120;
-
+for(let i=tankPositions.length-1;i>=0;i--){//colision with tank
+  if(this.position ==tankPositions[i])continue;
+  if((this.position.Y+WIDTH_TANK_IMAGE-this.deltaY*directionIndex>=tankPositions[i].Y)&&(this.position.Y-this.deltaY*directionIndex<=tankPositions[i].Y+WIDTH_TANK_IMAGE)&&
+    (this.position.X+WIDTH_TANK_IMAGE+this.deltaX*directionIndex>tankPositions[i].X)&&(this.position.X+this.deltaX*directionIndex<=tankPositions[i].X+WIDTH_TANK_IMAGE)){
+    return;
+}
+}
+if(this.position.Y-this.deltaY*directionIndex>=0&&this.position.Y-this.deltaY*directionIndex+WIDTH_TANK_IMAGE<=window.innerHeight)this.position.Y-=(this.deltaY)*directionIndex;
+if(this.position.X+this.deltaX*directionIndex>=0&&this.position.X+this.deltaX*directionIndex+WIDTH_TANK_IMAGE<=window.innerWidth) this.position.X+=this.deltaX*directionIndex;
 this.$el.style.top= this.position.Y+'px';
 this.$el.style.left= this.position.X+'px';
-	   //move track
-	   this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
-  }
-  this.$trackR.style.backgroundPosition = '0px '+this.trackPositionR+'px';
-  this.$trackL.style.backgroundPosition = '0px '+this.trackPositionL+'px';
+this.trackPositionL= this.trackPositionR-=Math.abs(this.deltaX)+Math.abs(this.deltaY);
+this.$trackR.style.backgroundPosition = '0px '+this.trackPositionR+'px';
+this.$trackL.style.backgroundPosition = '0px '+this.trackPositionL+'px';
 };
 
 Tank.prototype.Fire = function(){
-  if(this.isDead)return;
-	var bullet=new Bullet(this.position.X,this.position.Y,{'X': this.deltaX,'Y': this.deltaY },this.angle,this.$el);
-	var start = Date.now();
-	soundPlay('mp3/shut.mp3');
-	var timer = setInterval(function () {
-		var timePassed = Date.now() - start;
-		if(bullet.isFindTank(timePassed)||timePassed>4000){
+  if(this.isDead||!this.canShoot)return;
+  this.canShoot=false;
+  var timerToAcceptShoot=setTimeout(function (tank) {
+    tank.canShoot=true;
+  },1000,this);
+  var bullet=new Bullet(this.position.X,this.position.Y,{'X': this.deltaX,'Y': this.deltaY },this.angle,this.$el);
+  var start = Date.now();
+  soundPlay('mp3/shut.mp3');
+  var timer = setInterval(function () {
+    var timePassed = Date.now() - start;
+    if(bullet.isFindTank(timePassed)||timePassed>4000){
       bullet.Destroy();
       clearInterval(timer);
-		}
- 	}, 5);
+    }
+  }, 5);
 };
 
 Tank.prototype.moveWithAI = function(){//пародія на інтелект
 	var randDirrection=null;
+  var counter=0;
+  var self=this;
+  var timer=setInterval(function(){
 
-	var self=this;
-	var timer=setInterval(function(){
     randDirrection=Math.random();
 
-    if(this.isDead) clearInterval(timer);
-    if(randDirrection>=0.4&&randDirrection<=0.95){
+    if(self.isDead) clearInterval(timer);
+    if(randDirrection>=0.4){
       self.Move("UP");
     }
-    else if(randDirrection>0.95){
-      self.Move("DOWN");
-    }
-    else if(randDirrection>0.2&&randDirrection<0.4){
+    // else if(randDirrection>0.95){
+    //   self.Move("DOWN");
+    // }
+    else if(randDirrection>0.25&&randDirrection<0.4){
      self.Move("LEFT");
    }
-   else if(randDirrection>0.1&&randDirrection<0.2){
+   else if(randDirrection>0.1&&randDirrection<0.25){
      self.Move("RIGHT");
    }
-   //if(randDirrection<=0.05)self.Fire();//don`t fire
- }, 250);
+   //if(randDirrection<=0.03)self.Fire();//don`t fire
+ }, 100);
 
 };
 
 Tank.prototype.Destroy = function(){
   this.isDead=true;
   setTimeout(function (tank) {
-  document.body.removeChild(tank.$el);
-  var index=enemys.indexOf(tank);
-  tankPositions.splice(index, 1);
-  enemys.splice(index, 1);
-}, 2000, this)};
+    document.body.removeChild(tank.$el);
+    var index=enemys.indexOf(tank);
+    tankPositions.splice(index, 1);
+    enemys.splice(index, 1);
+  }, 2000, this)};
